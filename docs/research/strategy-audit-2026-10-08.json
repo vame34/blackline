@@ -1,0 +1,811 @@
+{
+  "as_of": "2026-10-08",
+  "status": "no_validated_positive_edge",
+  "baseline_audit": {
+    "fee_per_side": 0.0004,
+    "cohort": "completed imported signals only; not a full equity backtest",
+    "periods": {
+      "all": {
+        "overall": {
+          "trades": 3670,
+          "win_rate_pct": 21.69,
+          "gross_expectancy_r": -0.1017,
+          "net_expectancy_r": -0.1838,
+          "avg_win_r": 3.7125,
+          "avg_loss_r": 1.2629,
+          "break_even_win_rate_pct": 25.38,
+          "profit_factor_equal_stop_risk": 0.8142,
+          "weekly_cluster_ci95": [
+            -0.3153,
+            -0.0379
+          ],
+          "median_holding_hours": 8.25,
+          "max_holding_hours": 421.25
+        },
+        "regimes": {
+          "trend": {
+            "trades": 2218,
+            "win_rate_pct": 20.74,
+            "gross_expectancy_r": -0.1325,
+            "net_expectancy_r": -0.2132,
+            "avg_win_r": 3.7938,
+            "avg_loss_r": 1.2617,
+            "break_even_win_rate_pct": 24.96,
+            "profit_factor_equal_stop_risk": 0.7868,
+            "weekly_cluster_ci95": [
+              -0.3905,
+              -0.0119
+            ],
+            "median_holding_hours": 8.0,
+            "max_holding_hours": 421.25
+          },
+          "range": {
+            "trades": 854,
+            "win_rate_pct": 22.37,
+            "gross_expectancy_r": -0.1106,
+            "net_expectancy_r": -0.1951,
+            "avg_win_r": 3.5319,
+            "avg_loss_r": 1.2688,
+            "break_even_win_rate_pct": 26.43,
+            "profit_factor_equal_stop_risk": 0.8019,
+            "weekly_cluster_ci95": [
+              -0.3999,
+              0.0295
+            ],
+            "median_holding_hours": 8.75,
+            "max_holding_hours": 228.75
+          },
+          "transition": {
+            "trades": 598,
+            "win_rate_pct": 24.25,
+            "gross_expectancy_r": 0.0252,
+            "net_expectancy_r": -0.0583,
+            "avg_win_r": 3.6925,
+            "avg_loss_r": 1.2589,
+            "break_even_win_rate_pct": 25.42,
+            "profit_factor_equal_stop_risk": 0.9389,
+            "weekly_cluster_ci95": [
+              -0.2815,
+              0.163
+            ],
+            "median_holding_hours": 8.25,
+            "max_holding_hours": 386.25
+          }
+        },
+        "directions": {
+          "LONG": {
+            "trades": 1565,
+            "win_rate_pct": 22.68,
+            "gross_expectancy_r": -0.0136,
+            "net_expectancy_r": -0.0994,
+            "avg_win_r": 3.868,
+            "avg_loss_r": 1.2634,
+            "break_even_win_rate_pct": 24.62,
+            "profit_factor_equal_stop_risk": 0.8982,
+            "weekly_cluster_ci95": [
+              -0.3279,
+              0.1204
+            ],
+            "median_holding_hours": 9.0,
+            "max_holding_hours": 386.25
+          },
+          "SHORT": {
+            "trades": 2105,
+            "win_rate_pct": 20.95,
+            "gross_expectancy_r": -0.1671,
+            "net_expectancy_r": -0.2465,
+            "avg_win_r": 3.5874,
+            "avg_loss_r": 1.2626,
+            "break_even_win_rate_pct": 26.03,
+            "profit_factor_equal_stop_risk": 0.753,
+            "weekly_cluster_ci95": [
+              -0.4173,
+              -0.0599
+            ],
+            "median_holding_hours": 7.75,
+            "max_holding_hours": 421.25
+          }
+        }
+      },
+      "development": {
+        "overall": {
+          "trades": 1609,
+          "win_rate_pct": 23.62,
+          "gross_expectancy_r": -0.0035,
+          "net_expectancy_r": -0.0826,
+          "avg_win_r": 3.6677,
+          "avg_loss_r": 1.2421,
+          "break_even_win_rate_pct": 25.3,
+          "profit_factor_equal_stop_risk": 0.913,
+          "weekly_cluster_ci95": [
+            -0.2808,
+            0.153
+          ],
+          "median_holding_hours": 7.75,
+          "max_holding_hours": 421.25
+        },
+        "regimes": {
+          "trend": {
+            "trades": 1016,
+            "win_rate_pct": 23.52,
+            "gross_expectancy_r": 0.0073,
+            "net_expectancy_r": -0.0703,
+            "avg_win_r": 3.7184,
+            "avg_loss_r": 1.2356,
+            "break_even_win_rate_pct": 24.94,
+            "profit_factor_equal_stop_risk": 0.9256,
+            "weekly_cluster_ci95": [
+              -0.3547,
+              0.2246
+            ],
+            "median_holding_hours": 7.75,
+            "max_holding_hours": 421.25
+          },
+          "range": {
+            "trades": 354,
+            "win_rate_pct": 21.19,
+            "gross_expectancy_r": -0.1959,
+            "net_expectancy_r": -0.2783,
+            "avg_win_r": 3.3995,
+            "avg_loss_r": 1.267,
+            "break_even_win_rate_pct": 27.15,
+            "profit_factor_equal_stop_risk": 0.7213,
+            "weekly_cluster_ci95": [
+              -0.5448,
+              -0.0054
+            ],
+            "median_holding_hours": 8.75,
+            "max_holding_hours": 206.25
+          },
+          "transition": {
+            "trades": 239,
+            "win_rate_pct": 27.62,
+            "gross_expectancy_r": 0.2355,
+            "net_expectancy_r": 0.1552,
+            "avg_win_r": 3.7892,
+            "avg_loss_r": 1.2312,
+            "break_even_win_rate_pct": 24.52,
+            "profit_factor_equal_stop_risk": 1.1742,
+            "weekly_cluster_ci95": [
+              -0.1484,
+              0.4771
+            ],
+            "median_holding_hours": 7.75,
+            "max_holding_hours": 219.25
+          }
+        },
+        "directions": {
+          "LONG": {
+            "trades": 813,
+            "win_rate_pct": 25.22,
+            "gross_expectancy_r": 0.1178,
+            "net_expectancy_r": 0.0367,
+            "avg_win_r": 3.9138,
+            "avg_loss_r": 1.2706,
+            "break_even_win_rate_pct": 24.51,
+            "profit_factor_equal_stop_risk": 1.0386,
+            "weekly_cluster_ci95": [
+              -0.2787,
+              0.3863
+            ],
+            "median_holding_hours": 8.5,
+            "max_holding_hours": 219.25
+          },
+          "SHORT": {
+            "trades": 796,
+            "win_rate_pct": 21.98,
+            "gross_expectancy_r": -0.1274,
+            "net_expectancy_r": -0.2044,
+            "avg_win_r": 3.3794,
+            "avg_loss_r": 1.2143,
+            "break_even_win_rate_pct": 26.43,
+            "profit_factor_equal_stop_risk": 0.7843,
+            "weekly_cluster_ci95": [
+              -0.4751,
+              0.0798
+            ],
+            "median_holding_hours": 7.25,
+            "max_holding_hours": 421.25
+          }
+        }
+      },
+      "validation": {
+        "overall": {
+          "trades": 2061,
+          "win_rate_pct": 20.18,
+          "gross_expectancy_r": -0.1783,
+          "net_expectancy_r": -0.2628,
+          "avg_win_r": 3.7535,
+          "avg_loss_r": 1.2784,
+          "break_even_win_rate_pct": 25.41,
+          "profit_factor_equal_stop_risk": 0.7425,
+          "weekly_cluster_ci95": [
+            -0.4307,
+            -0.076
+          ],
+          "median_holding_hours": 9.0,
+          "max_holding_hours": 386.25
+        },
+        "regimes": {
+          "trend": {
+            "trades": 1202,
+            "win_rate_pct": 18.39,
+            "gross_expectancy_r": -0.2506,
+            "net_expectancy_r": -0.3341,
+            "avg_win_r": 3.8754,
+            "avg_loss_r": 1.2824,
+            "break_even_win_rate_pct": 24.86,
+            "profit_factor_equal_stop_risk": 0.6808,
+            "weekly_cluster_ci95": [
+              -0.5749,
+              -0.0882
+            ],
+            "median_holding_hours": 9.0,
+            "max_holding_hours": 351.75
+          },
+          "range": {
+            "trades": 500,
+            "win_rate_pct": 23.2,
+            "gross_expectancy_r": -0.0501,
+            "net_expectancy_r": -0.1362,
+            "avg_win_r": 3.6175,
+            "avg_loss_r": 1.2701,
+            "break_even_win_rate_pct": 25.99,
+            "profit_factor_equal_stop_risk": 0.8604,
+            "weekly_cluster_ci95": [
+              -0.4488,
+              0.2243
+            ],
+            "median_holding_hours": 9.0,
+            "max_holding_hours": 228.75
+          },
+          "transition": {
+            "trades": 359,
+            "win_rate_pct": 22.01,
+            "gross_expectancy_r": -0.1148,
+            "net_expectancy_r": -0.2004,
+            "avg_win_r": 3.6118,
+            "avg_loss_r": 1.276,
+            "break_even_win_rate_pct": 26.11,
+            "profit_factor_equal_stop_risk": 0.7986,
+            "weekly_cluster_ci95": [
+              -0.4707,
+              0.0856
+            ],
+            "median_holding_hours": 8.75,
+            "max_holding_hours": 386.25
+          }
+        },
+        "directions": {
+          "LONG": {
+            "trades": 752,
+            "win_rate_pct": 19.95,
+            "gross_expectancy_r": -0.1557,
+            "net_expectancy_r": -0.2465,
+            "avg_win_r": 3.8054,
+            "avg_loss_r": 1.2562,
+            "break_even_win_rate_pct": 24.82,
+            "profit_factor_equal_stop_risk": 0.7548,
+            "weekly_cluster_ci95": [
+              -0.5515,
+              0.024
+            ],
+            "median_holding_hours": 9.75,
+            "max_holding_hours": 386.25
+          },
+          "SHORT": {
+            "trades": 1309,
+            "win_rate_pct": 20.32,
+            "gross_expectancy_r": -0.1913,
+            "net_expectancy_r": -0.2721,
+            "avg_win_r": 3.7241,
+            "avg_loss_r": 1.2913,
+            "break_even_win_rate_pct": 25.75,
+            "profit_factor_equal_stop_risk": 0.7355,
+            "weekly_cluster_ci95": [
+              -0.5074,
+              -0.0278
+            ],
+            "median_holding_hours": 8.5,
+            "max_holding_hours": 351.75
+          }
+        }
+      }
+    }
+  },
+  "regime_experiments": {
+    "source": "Binance spot",
+    "start_ms": 1728345600000,
+    "split_ms": 1759881600000,
+    "end_ms": 1791432000000,
+    "warning": "Exploratory validation, spot OHLCV short proxy; funding/borrow absent. Hourly fills approximate intrabar execution. Not deployable evidence.",
+    "assumptions": {
+      "capital": 10000,
+      "risk_pct": 0.5,
+      "portfolio_risk_pct": 2,
+      "directional_risk_pct": 1.5,
+      "equity_stop_pct": 12,
+      "target_max_dd_pct": 15,
+      "fee_per_side": 0.0004,
+      "slippage_per_side": 0.0002
+    },
+    "results": {
+      "breakout20": {
+        "development": {
+          "trades": 639,
+          "skipped": 4708,
+          "roi_pct": -3.858,
+          "max_dd_pct": 12.293,
+          "profit_factor": 0.965,
+          "expectancy_r": 0.0443,
+          "halted": true,
+          "max_open_risk_pct": 2.0,
+          "generated": 5347
+        },
+        "development_double_cost": {
+          "trades": 338,
+          "skipped": 5009,
+          "roi_pct": -4.182,
+          "max_dd_pct": 12.633,
+          "profit_factor": 0.934,
+          "expectancy_r": -0.0176,
+          "halted": true,
+          "max_open_risk_pct": 2.0
+        },
+        "validation": {
+          "trades": 154,
+          "skipped": 5015,
+          "roi_pct": -6.076,
+          "max_dd_pct": 12.126,
+          "profit_factor": 0.776,
+          "expectancy_r": -0.1082,
+          "halted": true,
+          "max_open_risk_pct": 2.0,
+          "generated": 5169
+        },
+        "validation_double_cost": {
+          "trades": 147,
+          "skipped": 5022,
+          "roi_pct": -4.74,
+          "max_dd_pct": 12.107,
+          "profit_factor": 0.817,
+          "expectancy_r": -0.0692,
+          "halted": true,
+          "max_open_risk_pct": 1.998
+        }
+      },
+      "breakout55": {
+        "development": {
+          "trades": 274,
+          "skipped": 3254,
+          "roi_pct": -2.695,
+          "max_dd_pct": 12.173,
+          "profit_factor": 0.952,
+          "expectancy_r": 0.023,
+          "halted": true,
+          "max_open_risk_pct": 2.0,
+          "generated": 3528
+        },
+        "development_double_cost": {
+          "trades": 283,
+          "skipped": 3245,
+          "roi_pct": -0.988,
+          "max_dd_pct": 12.576,
+          "profit_factor": 0.982,
+          "expectancy_r": 0.0133,
+          "halted": true,
+          "max_open_risk_pct": 1.999
+        },
+        "validation": {
+          "trades": 252,
+          "skipped": 3120,
+          "roi_pct": -4.684,
+          "max_dd_pct": 12.661,
+          "profit_factor": 0.874,
+          "expectancy_r": -0.0414,
+          "halted": true,
+          "max_open_risk_pct": 1.998,
+          "generated": 3372
+        },
+        "validation_double_cost": {
+          "trades": 235,
+          "skipped": 3137,
+          "roi_pct": -4.772,
+          "max_dd_pct": 12.118,
+          "profit_factor": 0.862,
+          "expectancy_r": -0.0589,
+          "halted": true,
+          "max_open_risk_pct": 1.998
+        }
+      },
+      "trend20": {
+        "development": {
+          "trades": 397,
+          "skipped": 1647,
+          "roi_pct": -8.492,
+          "max_dd_pct": 12.272,
+          "profit_factor": 0.875,
+          "expectancy_r": 0.0188,
+          "halted": true,
+          "max_open_risk_pct": 1.999,
+          "generated": 2044
+        },
+        "development_double_cost": {
+          "trades": 342,
+          "skipped": 1702,
+          "roi_pct": -8.483,
+          "max_dd_pct": 12.113,
+          "profit_factor": 0.846,
+          "expectancy_r": 0.0346,
+          "halted": true,
+          "max_open_risk_pct": 2.0
+        },
+        "validation": {
+          "trades": 173,
+          "skipped": 1689,
+          "roi_pct": -4.758,
+          "max_dd_pct": 12.535,
+          "profit_factor": 0.829,
+          "expectancy_r": -0.1016,
+          "halted": true,
+          "max_open_risk_pct": 1.988,
+          "generated": 1862
+        },
+        "validation_double_cost": {
+          "trades": 170,
+          "skipped": 1692,
+          "roi_pct": -6.63,
+          "max_dd_pct": 12.384,
+          "profit_factor": 0.755,
+          "expectancy_r": -0.1309,
+          "halted": true,
+          "max_open_risk_pct": 1.989
+        }
+      },
+      "trend55": {
+        "development": {
+          "trades": 282,
+          "skipped": 1480,
+          "roi_pct": -3.999,
+          "max_dd_pct": 12.33,
+          "profit_factor": 0.927,
+          "expectancy_r": 0.0063,
+          "halted": true,
+          "max_open_risk_pct": 1.999,
+          "generated": 1762
+        },
+        "development_double_cost": {
+          "trades": 288,
+          "skipped": 1474,
+          "roi_pct": -6.561,
+          "max_dd_pct": 12.674,
+          "profit_factor": 0.879,
+          "expectancy_r": 0.012,
+          "halted": true,
+          "max_open_risk_pct": 2.0
+        },
+        "validation": {
+          "trades": 138,
+          "skipped": 1450,
+          "roi_pct": -5.059,
+          "max_dd_pct": 12.068,
+          "profit_factor": 0.788,
+          "expectancy_r": -0.0844,
+          "halted": true,
+          "max_open_risk_pct": 1.758,
+          "generated": 1588
+        },
+        "validation_double_cost": {
+          "trades": 142,
+          "skipped": 1446,
+          "roi_pct": -5.876,
+          "max_dd_pct": 12.015,
+          "profit_factor": 0.744,
+          "expectancy_r": -0.126,
+          "halted": true,
+          "max_open_risk_pct": 1.758
+        }
+      },
+      "range": {
+        "development": {
+          "trades": 69,
+          "skipped": 4,
+          "roi_pct": -4.587,
+          "max_dd_pct": 5.564,
+          "profit_factor": 0.794,
+          "expectancy_r": -0.1309,
+          "halted": false,
+          "max_open_risk_pct": 1.002,
+          "generated": 73
+        },
+        "development_double_cost": {
+          "trades": 69,
+          "skipped": 4,
+          "roi_pct": -6.175,
+          "max_dd_pct": 6.708,
+          "profit_factor": 0.721,
+          "expectancy_r": -0.1801,
+          "halted": false,
+          "max_open_risk_pct": 1.002
+        },
+        "validation": {
+          "trades": 121,
+          "skipped": 16,
+          "roi_pct": -10.506,
+          "max_dd_pct": 12.07,
+          "profit_factor": 0.665,
+          "expectancy_r": -0.2352,
+          "halted": true,
+          "max_open_risk_pct": 1.5,
+          "generated": 137
+        },
+        "validation_double_cost": {
+          "trades": 117,
+          "skipped": 20,
+          "roi_pct": -10.705,
+          "max_dd_pct": 12.072,
+          "profit_factor": 0.622,
+          "expectancy_r": -0.2658,
+          "halted": true,
+          "max_open_risk_pct": 1.004
+        }
+      },
+      "router": {
+        "development": {
+          "trades": 320,
+          "skipped": 1511,
+          "roi_pct": -6.625,
+          "max_dd_pct": 12.097,
+          "profit_factor": 0.889,
+          "expectancy_r": -0.0031,
+          "halted": true,
+          "max_open_risk_pct": 1.999,
+          "generated": 1831
+        },
+        "development_double_cost": {
+          "trades": 228,
+          "skipped": 1603,
+          "roi_pct": -11.039,
+          "max_dd_pct": 12.028,
+          "profit_factor": 0.742,
+          "expectancy_r": -0.0973,
+          "halted": true,
+          "max_open_risk_pct": 2.0
+        },
+        "validation": {
+          "trades": 156,
+          "skipped": 1551,
+          "roi_pct": -4.659,
+          "max_dd_pct": 12.047,
+          "profit_factor": 0.837,
+          "expectancy_r": -0.0552,
+          "halted": true,
+          "max_open_risk_pct": 1.999,
+          "generated": 1707
+        },
+        "validation_double_cost": {
+          "trades": 163,
+          "skipped": 1544,
+          "roi_pct": -6.041,
+          "max_dd_pct": 12.17,
+          "profit_factor": 0.777,
+          "expectancy_r": -0.1198,
+          "halted": true,
+          "max_open_risk_pct": 1.758
+        }
+      }
+    }
+  },
+  "portfolio_metrics": {
+    "365": {
+      "model_version": 3,
+      "risk_model_version": "4b2de394968afede",
+      "scope": "portfolio",
+      "symbol": null,
+      "symbols": [
+        "RUNEUSDT",
+        "BTCUSDT",
+        "AVAXUSDT",
+        "TRXUSDT",
+        "XRPUSDT",
+        "SEIUSDT",
+        "BNBUSDT",
+        "MANAUSDT",
+        "ALGOUSDT",
+        "XLMUSDT",
+        "LTCUSDT",
+        "COMPUSDT",
+        "DOGEUSDT",
+        "KAVAUSDT",
+        "SANDUSDT",
+        "ICPUSDT",
+        "DOTUSDT",
+        "ATOMUSDT",
+        "ETHUSDT",
+        "ZRXUSDT",
+        "FILUSDT",
+        "CHZUSDT",
+        "SUSHIUSDT",
+        "INJUSDT",
+        "SNXUSDT"
+      ],
+      "period_days": 365,
+      "leverage": 10,
+      "base_initial_capital": 10000,
+      "final_equity": 9124.47,
+      "roi_pct": -8.7553,
+      "max_drawdown_pct": 12.2381,
+      "opened": 424,
+      "closed": 424,
+      "wins": 103,
+      "losses": 321,
+      "flats": 0,
+      "skipped_no_capital": 0,
+      "skipped_invalid": 0,
+      "skipped_risk": 1637,
+      "risk_halted": true,
+      "drawdown_basis": "realized_equity",
+      "gross_pnl": -398.14,
+      "total_entry_fees": 238.83,
+      "total_exit_fees": 238.56,
+      "net_pnl_after_fees": -875.53,
+      "avg_trade_pct": -0.0931,
+      "commission_rate_base": 0.0004,
+      "commission_rate_effective": 0.0004,
+      "commission_leverage_multiplier": 1,
+      "profit_factor": 0.8614,
+      "win_rate": 0.2429245283018868,
+      "avg_r": -0.114842,
+      "max_drawdown": 0.12238099999999999,
+      "total_trades": 424
+    },
+    "730": {
+      "model_version": 3,
+      "risk_model_version": "4b2de394968afede",
+      "scope": "portfolio",
+      "symbol": null,
+      "symbols": [
+        "RUNEUSDT",
+        "BTCUSDT",
+        "AVAXUSDT",
+        "TRXUSDT",
+        "XRPUSDT",
+        "SEIUSDT",
+        "BNBUSDT",
+        "MANAUSDT",
+        "ALGOUSDT",
+        "XLMUSDT",
+        "LTCUSDT",
+        "COMPUSDT",
+        "DOGEUSDT",
+        "KAVAUSDT",
+        "SANDUSDT",
+        "ICPUSDT",
+        "DOTUSDT",
+        "ATOMUSDT",
+        "ETHUSDT",
+        "ZRXUSDT",
+        "FILUSDT",
+        "CHZUSDT",
+        "SUSHIUSDT",
+        "INJUSDT",
+        "SNXUSDT"
+      ],
+      "period_days": 730,
+      "leverage": 10,
+      "base_initial_capital": 10000,
+      "final_equity": 9082.43,
+      "roi_pct": -9.1757,
+      "max_drawdown_pct": 12.0746,
+      "opened": 354,
+      "closed": 354,
+      "wins": 79,
+      "losses": 275,
+      "flats": 0,
+      "skipped_no_capital": 0,
+      "skipped_invalid": 0,
+      "skipped_risk": 3315,
+      "risk_halted": true,
+      "drawdown_basis": "realized_equity",
+      "gross_pnl": -492.81,
+      "total_entry_fees": 212.48,
+      "total_exit_fees": 212.28,
+      "net_pnl_after_fees": -917.57,
+      "avg_trade_pct": -0.1917,
+      "commission_rate_base": 0.0004,
+      "commission_rate_effective": 0.0004,
+      "commission_leverage_multiplier": 1,
+      "profit_factor": 0.8487,
+      "win_rate": 0.2231638418079096,
+      "avg_r": -0.167909,
+      "max_drawdown": 0.120746,
+      "total_trades": 354
+    }
+  },
+  "archive_manifest": {
+    "source": "Binance spot",
+    "symbols": [
+      "RUNEUSDT",
+      "BTCUSDT",
+      "AVAXUSDT",
+      "TRXUSDT",
+      "XRPUSDT",
+      "SEIUSDT",
+      "BNBUSDT",
+      "MANAUSDT",
+      "ALGOUSDT",
+      "XLMUSDT",
+      "LTCUSDT",
+      "COMPUSDT",
+      "DOGEUSDT",
+      "KAVAUSDT",
+      "SANDUSDT",
+      "ICPUSDT",
+      "DOTUSDT",
+      "ATOMUSDT",
+      "ETHUSDT",
+      "ZRXUSDT",
+      "FILUSDT",
+      "CHZUSDT",
+      "SUSHIUSDT",
+      "INJUSDT",
+      "SNXUSDT"
+    ],
+    "start_ms": 1728345600000,
+    "end_ms": 1791433800000,
+    "entry_warmup_days": 3,
+    "context_padding_days": 15
+  },
+  "archive_sha256": {
+    "ALGOUSDT-15m.json": "1e08fc6b380b4d27189a6dac2bb4cfa8145223aa6110f5b7f88f940f13e30afa",
+    "ALGOUSDT-1h.json": "4c9b6599365fd5747dc09492a0f4879724a0d3d79f3edb4371262a73955d1234",
+    "ATOMUSDT-15m.json": "de61899c1e6f6e6f175a513c93a8bc2d2ae72891ce7f511f41cf7d1f32ac9c11",
+    "ATOMUSDT-1h.json": "52187cd5dd82d80b0645d439c2d0f321425de5e43f9ef5bc50fbcd56c6299a54",
+    "AVAXUSDT-15m.json": "3dc3277b11b158e98371de3ce33cc79f890fb1f079f026bd59e868114917c58b",
+    "AVAXUSDT-1h.json": "eaafd71937633d1aa85f85fd0e4d2cc3faf157f8af26e9998949d08239ec99f5",
+    "BNBUSDT-15m.json": "f04a2b0174b3f3b9f777c8c6d561e8200151122ccea74a963fa4b70f9b633191",
+    "BNBUSDT-1h.json": "c4c43c38e8d07c13df9455da635d39cea936ce081bdc28f1e0f99045ef4aa863",
+    "BTCUSDT-15m.json": "6ae05f31a9b46bcd136f9852492f120a042fc16356fb8d19911782564d7667eb",
+    "BTCUSDT-1h.json": "a3f01ab61108a7a0bcc2cda82be14abfa5d7e83b11f51ffc51a39f4a74f9fccb",
+    "CHZUSDT-15m.json": "3aba56c60e62c2d31ebfb60e956d008991dfae7a4fa527ae6693638b956ce756",
+    "CHZUSDT-1h.json": "3dbe74a433ec1bd4c86e15689333e91a4452fd228f3af0f977afc5f1f5112fd4",
+    "COMPUSDT-15m.json": "c2c9957a6f9212c2795e7a26b634694627aa4a8eb946cc8383299b0d559b7340",
+    "COMPUSDT-1h.json": "baf5a20528c617ded4400a454ad70d224adf945124c85659aab5d9c951749253",
+    "DOGEUSDT-15m.json": "aa8f3beca49638dd390317198e6a0fa9a900f8dc44c6745ac725c022e3f822a3",
+    "DOGEUSDT-1h.json": "eff9ad08c42dbd4e5bab741377382957be50ee25e93592bafcd26671850e26c1",
+    "DOTUSDT-15m.json": "f98e46ae65429d570d06476454207b8655ef4052a775cd7b4d6d002f22840379",
+    "DOTUSDT-1h.json": "3f2818f14c661af8acbde25884e4f4cfda976dab3ee724764bb7a463f47ed65d",
+    "ETHUSDT-15m.json": "4956239190f894bf3d9572d7bbca15cca8d4dc3d53ed9676c4b59ff41d9c7c8b",
+    "ETHUSDT-1h.json": "48ca0e5cf412a9a38d1ce191d4e5869da5a17e8b79657d193db1ede164e0b0d8",
+    "FILUSDT-15m.json": "fa1a2b03941223dba9699e23f0808e75be8b48e01ac14688453baac6860f8634",
+    "FILUSDT-1h.json": "135ddbd747fd8956bd8e84faeb25694466f5249579aa404fcedf7af9767abe4d",
+    "ICPUSDT-15m.json": "154e22b115981615ca3e62363b5fe96fe729cacd0b8cf62a53c45e58a96fe360",
+    "ICPUSDT-1h.json": "42ec9c5b175455442889da3770bb6f8be810dc3cde621e26c0c8dc696b692f67",
+    "INJUSDT-15m.json": "3be70cb130bad98ad9f1cfcc0474aa588a936b40293a689f99fcefcd8d2cd56c",
+    "INJUSDT-1h.json": "cc047bdeb6fbda74c558033f212ef38c789d6d6f8eee36011042afc53473adc4",
+    "KAVAUSDT-15m.json": "1477494e6a8ab8f44a35892aa0f015e09e9e9bd6d847fd91daf6e5e6b3555e26",
+    "KAVAUSDT-1h.json": "70969ac98154f440f172efb379bbcb09a348992b2fba0cdea6c86309b3dbee8e",
+    "LTCUSDT-15m.json": "d8315e2237fb99a6fe62477b94e36f6b698ef2323cd828ad282e4760955b69e2",
+    "LTCUSDT-1h.json": "6bea66a659f46c00e96c16f6b0cdb5538f0f79491228752fa8d7a49a6d8fe402",
+    "MANAUSDT-15m.json": "4a64ebe7655b4668c60a4d5b184e183b7b79ccbe79e0a4710aa22b712e1ce85b",
+    "MANAUSDT-1h.json": "e0d45dc3776121744fe306d76e860c85e4c286e14342484f0d0eb1855ecfe8f1",
+    "RUNEUSDT-15m.json": "34d13f87c1b305bfc0bc31fecac045eea3060c4db77dc510af94bd74c56174e6",
+    "RUNEUSDT-1h.json": "1edc8ab1e96eb54553b8b59511d5dd00e4256b5e8d6917937ab18184b237f378",
+    "SANDUSDT-15m.json": "745a113a0b9549cb02742140118c262a6dd2c731149a1aae96574edfdc0b522c",
+    "SANDUSDT-1h.json": "3fbc311ce79a9f27b57f7472fcdc6b04e4854815540c13f293216d55c9ec981c",
+    "SEIUSDT-15m.json": "2f86b3fbcc1cdb699d0e77f7b4013f911ec60603eb238f855dc92688d5e5e9eb",
+    "SEIUSDT-1h.json": "970ce706fb49a0b89cb4f3c5d12ca458fd41d8ce90690f23529522ba1e0f030a",
+    "SNXUSDT-15m.json": "f20028416c8a28923146567c6abb94e62a5b8a058e3238f6d5a83270272d65c7",
+    "SNXUSDT-1h.json": "c40e62b49656ff7950b779dcec5a44d4fe3201e2932e9205d9946122ee16dc32",
+    "SUSHIUSDT-15m.json": "127ca7497f70b6e30e573e547073524e27babec9fd5971101d199b63e0501694",
+    "SUSHIUSDT-1h.json": "2e1d5c1d0eb6c035ff387ec7a860d8f64306fcf0ed0dbcf948a507c774a84296",
+    "TRXUSDT-15m.json": "63701d445bca9707884be918d26dc937bf426c5ee40b33561b20659402e4115c",
+    "TRXUSDT-1h.json": "59779783069367053681f115e37c84ba0623230168d69068db3f8fed9cc55d66",
+    "XLMUSDT-15m.json": "b4373e918d420d5e0b79228e88769f6ca05527537006abedf9784451ab66ced2",
+    "XLMUSDT-1h.json": "5ade911533d2e18504b0dc6c69259ac0c9357eceacbfd4b41b2ec0bf045a1df0",
+    "XRPUSDT-15m.json": "bd2f09de21878dc7105dd5131d0ac49a4b13ff9bc58f1b6f8bf93df1ebc8e9da",
+    "XRPUSDT-1h.json": "6fef18797e821f887fbd97ea0bf7e048bad325817b0294158125ff1e5081a3e7",
+    "ZRXUSDT-15m.json": "d66a76297711b365ff8d04243578a881cf675e68125e5faae2c0245822bd6deb",
+    "ZRXUSDT-1h.json": "08a0717d0c60bd5ea807d7814b9eefa4b200987c2aae66f5871ae5200eac0f17"
+  }
+}

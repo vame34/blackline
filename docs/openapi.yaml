@@ -1,0 +1,799 @@
+openapi: 3.1.0
+info:
+  title: Blackline Signals API
+  version: 1.0.0
+  description: |
+    ## General API Information
+
+    Blackline Signals API is a public integration API for algorithmic and discretionary crypto workflows.
+
+    - Protocol: `HTTPS`
+    - Data format: `JSON` for REST, `text/event-stream` for realtime stream
+    - Base endpoint: `http://localhost:8080/api/v1`
+    - Time format: `ISO-8601 UTC` (example: `2026-02-16T15:30:01.000000Z`)
+
+    ## Authentication
+
+    API supports **two authorization headers**:
+
+    1. `Authorization: Bearer <token>` (recommended)
+    2. `X-API-Key: <token>`
+
+    API token is created on `/api/docs` → **API доступ**.
+
+    ## Rate Limits
+
+    Current production limits:
+
+    - `API_RATE_LIMIT_PER_MINUTE=90`
+    - `API_STREAM_MAX_DURATION_SECONDS=55`
+    - `API_STREAM_MAX_CLIENT_TIMEOUT_SECONDS=60`
+    - `API_STREAM_MAX_CONCURRENT_PER_TOKEN=2`
+
+    If limits are exceeded, API returns `429`.
+
+    ## Error Model
+
+    Non-2xx responses return JSON payload:
+
+    ```json
+    {
+      "message": "Invalid or expired API token.",
+      "error_code": "UNAUTHORIZED"
+    }
+    ```
+
+    ## Realtime Stream Behavior
+
+    Stream endpoint: `GET /signals/stream`
+
+    Event types:
+    - `ready` — session initialized
+    - `signal.published` — new signal available
+    - `heartbeat` — keepalive event
+    - `end` — reconnect required
+
+    Reconnect policy:
+    - Always store latest `cursor`
+    - Reconnect with `since_id=<cursor>`
+    - Keep periodic backfill via `GET /signals?status=all`
+
+servers:
+  - url: http://localhost:8080/api/v1
+    description: Production
+
+security:
+  - bearerAuth: []
+  - apiKeyAuth: []
+
+tags:
+  - name: Auth
+    description: Token validation and identity endpoints.
+  - name: Signals
+    description: Signals list and signal details.
+  - name: Realtime
+    description: Server-Sent Events stream for new signals.
+  - name: Reference
+    description: Instruments and money-management model.
+
+paths:
+  /me:
+    get:
+      tags: [Auth]
+      operationId: getApiIdentity
+      summary: Get current API identity
+      description: |
+        Returns user profile and metadata of the API token used for current request.
+
+        Useful for:
+        - quick integration smoke-check
+        - token ownership verification
+        - token expiry monitoring
+      responses:
+        '200':
+          description: Identity payload
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ApiIdentity'
+              examples:
+                ok:
+                  value:
+                    data:
+                      id: 15
+                      name: Trader One
+                      email: trader@example.com
+                      token:
+                        id: 8
+                        name: Signal viewer
+                        last_used_at: '2026-02-16T15:30:01.000000Z'
+                        expires_at: '2027-02-16T14:10:11.000000Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /signals:
+    get:
+      tags: [Signals]
+      operationId: listSignals
+      summary: List signals
+      description: |
+        Returns paginated list of published/closed signals.
+
+        Notes:
+        - `status=published` by default
+        - `status=all` returns published + closed
+        - pagination is standard `page` + `per_page`
+      parameters:
+        - name: strategy
+          in: query
+          description: Optional registered strategy key. Omit to list every strategy.
+          schema:
+            type: string
+          example: smart_volume_v1
+        - in: query
+          name: symbol
+          description: Asset symbol filter (example `BTCUSDT`).
+          schema:
+            type: string
+            maxLength: 32
+          example: BTCUSDT
+        - in: query
+          name: direction
+          description: Direction filter.
+          schema:
+            type: string
+            enum: [LONG, SHORT]
+          example: LONG
+        - in: query
+          name: timeframe
+          description: Timeframe filter.
+          schema:
+            type: string
+            maxLength: 12
+          example: 1h
+        - in: query
+          name: category_id
+          description: Signal category id.
+          schema:
+            type: integer
+            minimum: 1
+          example: 1
+        - in: query
+          name: status
+          description: Status scope.
+          schema:
+            type: string
+            enum: [published, closed, all]
+            default: published
+          example: all
+        - in: query
+          name: risk
+          description: Risk profile.
+          schema:
+            type: string
+            enum: [low, medium, high]
+          example: medium
+        - in: query
+          name: sort
+          description: Sorting strategy.
+          schema:
+            type: string
+            enum: [recent, oldest, entry_new, entry_old, best_r, worst_r]
+            default: recent
+          example: recent
+        - in: query
+          name: period
+          description: Relative period. Ignored when `date_from` or `date_to` are present.
+          schema:
+            type: string
+            enum: [1d, 7d, 14d, 30d, 60d, 90d, 180d, 365d, 730d, all]
+          example: 30d
+        - in: query
+          name: date_from
+          description: Absolute date filter from (YYYY-MM-DD).
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}-\d{2}$'
+          example: '2026-01-01'
+        - in: query
+          name: date_to
+          description: Absolute date filter to (YYYY-MM-DD).
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}-\d{2}$'
+          example: '2026-03-18'
+        - in: query
+          name: per_page
+          description: Page size.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+          example: 20
+        - in: query
+          name: page
+          description: Page number.
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          example: 1
+      responses:
+        '200':
+          description: Paginated response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalsListResponse'
+              examples:
+                list:
+                  value:
+                    data:
+                      - id: 5326
+                        exchange: bybit
+                        symbol: HBARUSDT
+                        timeframe: 1h
+                        direction: SHORT
+                        status: published
+                        strategy_key: volume_v1
+                        entry_at: '2026-02-16T12:16:00.000000Z'
+                        published_at: '2026-02-16T12:20:00.000000Z'
+                        expires_at: null
+                        closed_at: null
+                        entry_price: 0.0912
+                        stop_loss: 0.0931
+                        take_profit: 0.0873
+                        close_price: null
+                        reward_risk: 2.04
+                        result_r: null
+                        result_pct: null
+                        risk_percent: 0.0208
+                        entry_zone: [0.0909, 0.0915]
+                        take_profit_targets: [0.0893, 0.0873]
+                        close_reason: null
+                        notes: null
+                        category:
+                          id: 1
+                          name: Volume Strategy
+                          slug: volume-strategy
+                        updates: []
+                    money_management:
+                      model: terminal_backtest_ladder
+                      version: 0f52c2b2e1aaf8b6
+                    meta:
+                      current_page: 1
+                      last_page: 12
+                      per_page: 20
+                      total: 237
+                    links:
+                      first: http://localhost:8080/api/v1/signals?page=1
+                      last: http://localhost:8080/api/v1/signals?page=12
+                      prev: null
+                      next: http://localhost:8080/api/v1/signals?page=2
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /signals/{id}:
+    get:
+      tags: [Signals]
+      operationId: getSignalById
+      summary: Get signal details
+      description: |
+        Returns full signal payload by id.
+
+        Set `include_updates=false` to reduce payload size.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Signal id.
+          schema:
+            type: integer
+            minimum: 1
+          example: 5326
+        - in: query
+          name: include_updates
+          description: Include latest signal updates.
+          schema:
+            type: boolean
+            default: true
+          example: true
+      responses:
+        '200':
+          description: Signal details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalDetailsResponse'
+              examples:
+                details:
+                  value:
+                    data:
+                      id: 5326
+                      exchange: bybit
+                      symbol: HBARUSDT
+                      timeframe: 1h
+                      direction: SHORT
+                      status: published
+                      strategy_key: volume_v1
+                      entry_at: '2026-02-16T12:16:00.000000Z'
+                      published_at: '2026-02-16T12:20:00.000000Z'
+                      expires_at: null
+                      closed_at: null
+                      entry_price: 0.0912
+                      stop_loss: 0.0931
+                      take_profit: 0.0873
+                      close_price: null
+                      reward_risk: 2.04
+                      result_r: null
+                      result_pct: null
+                      risk_percent: 0.0208
+                      entry_zone: [0.0909, 0.0915]
+                      take_profit_targets: [0.0893, 0.0873]
+                      close_reason: null
+                      notes: null
+                      category:
+                        id: 1
+                        name: Volume Strategy
+                        slug: volume-strategy
+                      updates:
+                        - id: 9001
+                          type: published
+                          title: Сигнал опубликован
+                          body: null
+                          payload: null
+                          published_at: '2026-02-16T12:20:01.000000Z'
+                    money_management:
+                      model: terminal_backtest_ladder
+                      version: 0f52c2b2e1aaf8b6
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /signals/stream:
+    get:
+      tags: [Realtime]
+      operationId: streamSignals
+      summary: Realtime signals stream (SSE)
+      description: |
+        Opens Server-Sent Events stream.
+
+        Response Content-Type: `text/event-stream`
+
+        ### Event Sequence
+        1. `ready`
+        2. zero or more `signal.published`
+        3. periodic `heartbeat`
+        4. `end` when session timeout reached
+
+        ### Client Strategy
+        - store latest `cursor`
+        - reconnect with `since_id=<cursor>`
+        - keep backfill via REST list endpoint
+      parameters:
+        - in: query
+          name: since_id
+          description: Last processed signal id.
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          example: 5326
+        - in: query
+          name: timeout
+          description: Requested stream session duration (server may cap it).
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 300
+            default: 55
+          example: 55
+        - in: query
+          name: poll_ms
+          description: Server polling interval for new events.
+          schema:
+            type: integer
+            minimum: 500
+            maximum: 5000
+            default: 1200
+          example: 1200
+      responses:
+        '200':
+          description: SSE stream
+          content:
+            text/event-stream:
+              schema:
+                type: string
+                example: |
+                  event: ready
+                  data: {"cursor":5326,"server_time":"2026-02-16T14:23:00.000000Z","money_management":{"model":"terminal_backtest_ladder","version":"0f52c2b2e1aaf8b6"}}
+
+                  event: signal.published
+                  data: {"cursor":5327,"signal":{"id":5327,"symbol":"BTCUSDT","direction":"LONG","entry_price":42000.5,"stop_loss":41420.0,"take_profit":43220.0},"money_management":{"model":"terminal_backtest_ladder","version":"0f52c2b2e1aaf8b6"}}
+
+                  event: heartbeat
+                  data: {"cursor":5327,"server_time":"2026-02-16T14:23:15.000000Z"}
+
+                  event: end
+                  data: {"cursor":5327,"reason":"reconnect_required","server_time":"2026-02-16T14:23:55.000000Z"}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /instruments:
+    get:
+      tags: [Reference]
+      operationId: listInstruments
+      summary: List supported instruments
+      description: Returns the full list of instruments covered by strategy signal feed.
+      responses:
+        '200':
+          description: Instruments list
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Instrument'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /risk-model:
+    get:
+      tags: [Reference]
+      operationId: getRiskModel
+      summary: Get full money-management model
+      description: Returns versioned strategy money-management contract used by terminal simulation.
+      responses:
+        '200':
+          description: Money-management model
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    $ref: '#/components/schemas/RiskModel'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /risk-model/version:
+    get:
+      tags: [Reference]
+      operationId: getRiskModelVersion
+      summary: Get money-management model version
+      responses:
+        '200':
+          description: Version payload
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      model: { type: string }
+                      version: { type: string }
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: API token
+      description: Use API token as bearer credential.
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: Alternative auth header.
+
+  responses:
+    Unauthorized:
+      description: Invalid or missing API token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: Invalid or expired API token.
+            error_code: UNAUTHORIZED
+
+    Forbidden:
+      description: Access denied for banned users or an untrusted IP.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: Access denied for banned users or an untrusted IP.
+            error_code: FORBIDDEN
+
+    ValidationError:
+      description: Validation failed.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              errors:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    type: string
+          example:
+            message: The given data was invalid.
+            errors:
+              per_page:
+                - The per page field must not be greater than 100.
+
+    TooManyRequests:
+      description: Rate limit or stream concurrency limit exceeded.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: Too many concurrent stream connections for this token.
+            error_code: TOO_MANY_STREAMS
+
+    NotFound:
+      description: Signal not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: Signal not found.
+            error_code: NOT_FOUND
+
+  schemas:
+    ApiIdentity:
+      type: object
+      required: [id, name, email, token]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        token:
+          type: object
+          required: [id, name]
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            last_used_at:
+              type: string
+              format: date-time
+              nullable: true
+            expires_at:
+              type: string
+              format: date-time
+              nullable: true
+
+    Signal:
+      type: object
+      properties:
+        id: { type: integer }
+        exchange: { type: string, nullable: true }
+        symbol: { type: string }
+        timeframe: { type: string }
+        direction: { type: string, enum: [LONG, SHORT], nullable: true }
+        status: { type: string, enum: [draft, published, closed, archived], nullable: true }
+        strategy_key: { type: string, nullable: true }
+        entry_at: { type: string, format: date-time, nullable: true }
+        published_at: { type: string, format: date-time, nullable: true }
+        expires_at: { type: string, format: date-time, nullable: true }
+        closed_at: { type: string, format: date-time, nullable: true }
+        entry_price: { type: number, nullable: true }
+        stop_loss: { type: number, nullable: true }
+        take_profit: { type: number, nullable: true }
+        close_price: { type: number, nullable: true }
+        reward_risk: { type: number, nullable: true }
+        result_r: { type: number, nullable: true }
+        result_pct: { type: number, nullable: true }
+        risk_percent: { type: number, nullable: true }
+        entry_zone:
+          type: array
+          nullable: true
+          items: { type: number }
+        take_profit_targets:
+          type: array
+          nullable: true
+          items: { type: number }
+        close_reason: { type: string, nullable: true }
+        notes: { type: string, nullable: true }
+        category:
+          type: object
+          nullable: true
+          properties:
+            id: { type: integer, nullable: true }
+            name: { type: string, nullable: true }
+            slug: { type: string, nullable: true }
+        updates:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: integer }
+              type: { type: string, nullable: true }
+              title: { type: string, nullable: true }
+              body: { type: string, nullable: true }
+              payload: { type: object, nullable: true, additionalProperties: true }
+              published_at: { type: string, format: date-time, nullable: true }
+
+    MoneyManagementSummary:
+      type: object
+      properties:
+        model: { type: string }
+        version: { type: string }
+        risk_ladder:
+          type: object
+          properties:
+            min_risk_percent: { type: number }
+            max_risk_percent: { type: number }
+            step_risk_percent: { type: number }
+            start_risk_percent: { type: number }
+        entry_rules:
+          type: object
+          properties:
+            required_signal_fields:
+              type: array
+              items: { type: string }
+            risk_update_after_close:
+              type: object
+              additionalProperties: { type: string }
+            no_entry_conditions:
+              type: array
+              items: { type: string }
+
+    SignalsListResponse:
+      type: object
+      required: [data, money_management, meta, links]
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Signal'
+        money_management:
+          $ref: '#/components/schemas/MoneyManagementSummary'
+        meta:
+          type: object
+          properties:
+            current_page: { type: integer }
+            last_page: { type: integer }
+            per_page: { type: integer }
+            total: { type: integer }
+        links:
+          type: object
+          properties:
+            first: { type: string, nullable: true }
+            last: { type: string, nullable: true }
+            prev: { type: string, nullable: true }
+            next: { type: string, nullable: true }
+
+    SignalDetailsResponse:
+      type: object
+      required: [data, money_management]
+      properties:
+        data:
+          $ref: '#/components/schemas/Signal'
+        money_management:
+          $ref: '#/components/schemas/MoneyManagementSummary'
+
+    PaginatedSignals:
+      type: object
+      required: [data, meta, links]
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Signal'
+        meta:
+          type: object
+          properties:
+            current_page: { type: integer }
+            last_page: { type: integer }
+            per_page: { type: integer }
+            total: { type: integer }
+        links:
+          type: object
+          properties:
+            first: { type: string, nullable: true }
+            last: { type: string, nullable: true }
+            prev: { type: string, nullable: true }
+            next: { type: string, nullable: true }
+
+    Instrument:
+      type: object
+      properties:
+        symbol: { type: string }
+        label: { type: string }
+        tradingview: { type: string }
+        exchange: { type: string }
+
+    RiskModel:
+      type: object
+      properties:
+        model: { type: string }
+        version: { type: string }
+        scope: { type: string }
+        leverage_bounds:
+          type: object
+          properties:
+            min: { type: integer }
+            max: { type: integer }
+        risk_ladder:
+          type: object
+          properties:
+            min_risk_percent: { type: number }
+            max_risk_percent: { type: number }
+            step_risk_percent: { type: number }
+            start_risk_percent: { type: number }
+        position_sizing:
+          type: object
+          additionalProperties: true
+        execution_notes:
+          type: array
+          items: { type: string }
+
+    Error:
+      type: object
+      required: [message, error_code]
+      properties:
+        message:
+          type: string
+        error_code:
+          type: string

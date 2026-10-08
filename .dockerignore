@@ -1,0 +1,14 @@
+.git
+.idea
+.vscode
+node_modules
+vendor
+storage
+bootstrap/cache
+tests
+docker-compose.yml
+docker-compose.prod.yml
+secrets
+.env
+.env.*
+README.md
